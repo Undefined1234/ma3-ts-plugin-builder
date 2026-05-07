@@ -14,7 +14,9 @@ export function createBaseConfig(maconfig: MAConfig, buildConfig: BuildConfig) {
 			process.exit();
 		}
 	}
-	const maPluginsInstallPath = path.join(buildConfig.maInstallPath, "gma3_library/datapools/plugins/");
+	const maPluginsInstallPath = path
+		.join(buildConfig.maInstallPath, "gma3_library/datapools/plugins/")
+		.replaceAll("\\", "/");
 	const { maPluginName, pluginVersion } = maconfig;
 	assertThrow(pluginVersion, "macofig.json missing 'pluginVersion' property");
 	const versionSuffix = `v${maconfig.pluginVersion}`;
@@ -74,12 +76,12 @@ export function getTranspiledFileName(fileName: string) {
 }
 
 export function createEntryConfig(fileName: string, config: Config) {
-	const maPluginPath = config.maPluginPath;
+	const maPluginPath = config.maPluginPath.replaceAll("\\", "/");
 	const targetFileName = getTranspiledFileName(fileName);
 
 	return {
 		targetFileName,
-		targetBundlePath: path.join(config.pluginsPath, maPluginPath, targetFileName),
+		targetBundlePath: path.join(config.pluginsPath, maPluginPath, targetFileName).replaceAll("\\", "/"),
 	};
 }
 
