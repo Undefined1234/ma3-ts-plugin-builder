@@ -10,6 +10,7 @@ import { generateXml } from "./generateXml";
 import { convertImagesToBase64 } from "./imageConverter";
 import { runTstl, runTstlWatch } from "./tstlRunner";
 import { createMultiVersionZip } from "./zipCreator";
+import { createSingleFile } from "./createSingleFile";
 
 type BuilderFn = (params: ModuleInterface) => ModuleResponseInterface;
 export const Builder: BuilderFn = ({ maconfig, buildConfig }) => {
@@ -78,6 +79,7 @@ export const Builder: BuilderFn = ({ maconfig, buildConfig }) => {
 				generateTSConfig(`./src/${comp.fileName}`, config, entryConfig, buildConfig);
 			}
 			generateXml(maconfig, config);
+			createSingleFile(config);
 			copyAssets(config);
 			if (comp != undefined) {
 				generateEnvFile(maconfig, config, "dev");
@@ -99,6 +101,7 @@ export const Builder: BuilderFn = ({ maconfig, buildConfig }) => {
 					runTstl("tsconfig.json");
 				}
 				generateXml(maconfig, config);
+				createSingleFile(config);
 				copyAssets(config);
 				// createZip(config, maTargetVersion)
 			}
